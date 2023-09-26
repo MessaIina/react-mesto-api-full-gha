@@ -1,0 +1,18 @@
+.login__input {
+  color: #ccc;
+  background-color: transparent;
+  border: none;
+  margin: 0 auto 30px;
+  width: 358px;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  padding-bottom: 10px;
+}
+.login__input:last-child {
+  margin: 0;
+}
+@media (max-width: 633px) {
+  .login__input {
+    width: 270px;
+  }
+}
