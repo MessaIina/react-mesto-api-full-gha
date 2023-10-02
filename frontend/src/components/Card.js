@@ -14,7 +14,7 @@ function Card({
 }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = cardOwner === currentUser._id;
-  const isLiked = likes.some((i) => i._id === currentUser._id);
+  const isLiked = likes && likes.length > 0 ? likes.some((i) => i === currentUser._id) : false;
   const cardLikeButtonClassName = `card__like-btn ${
     isLiked && "card__like-btn_liked"
   }`;

@@ -8,93 +8,108 @@ class Api {
     }
     return res.json();
   }
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}` 
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  getUserAvatar() {
+  getUserAvatar(token) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  getInitialCards() {
+  getInitialCards(token) {
     return fetch(`${this._baseUrl}/cards`, {
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  setUserAvatar(data) {
+  setUserAvatar(avatarLink, token) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        avatar: data.avatar,
+        avatar: avatarLink,
       }),
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  setUserInfo(data) {
+  setUserInfo(name, about, token) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}` 
       },
       body: JSON.stringify({
-        name: data.name,
-        about: data.about,
+        name: name,
+        about: about,
       }),
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  createCard(data) {
+  createCard(name, link, token) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(data),
+      credentials: 'include',
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
     }).then(this._handleResponse);
   }
-  deleteCard(id) {
+  deleteCard(id, token) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  likeCard(id) {
+  likeCard(id, token) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
-  dislikeCard(id) {
+  dislikeCard(id, token) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: {
         'Content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
     }).then(this._handleResponse);
   }
 }
+
 export const api = new Api({
-  baseUrl: "https://api.mesto.msl.nomoredomainsrocks.ru",
-});
+  baseUrl: 'https://api.mesto.msl.nomoredomainsrocks.ru',
+})

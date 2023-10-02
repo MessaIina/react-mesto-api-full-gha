@@ -59,7 +59,7 @@ function Main({
               name={card.name}
               selectedCard={selectedCard}
               onZoom={onZoom}
-              cardOwner={card.owner._id}
+              cardOwner={card.owner}
               onCardLike={onCardLike}
               card={card}
               onCardDelete={onCardDelete}

@@ -1,61 +1,54 @@
-class Auth {
-  constructor(baseUrl) {
-    this._baseUrl = baseUrl;
-  }
+export const BASE_URL = "https://api.mesto.msl.nomoredomainsrocks.ru";
 
-_handleResponse(res) {
-    if (!res.ok) {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-    return res.json();
-  }
-
-register({ email, password }) {
-  return fetch(`${this._baseUrl}/signup`, {
+const handleResponse = (res) => { 
+  if (res.ok) { 
+    return res.json(); 
+  } else { 
+    return Promise.reject(`Ошибка: ${res.status}`); 
+  } 
+}; 
+ 
+export const register = (email, password) => { 
+  return fetch(`${BASE_URL}/signup`, { 
+    method: "POST", 
+    headers: { 
+      Accept: "application/json", 
+      "Content-Type": "application/json", 
+    }, 
+    body: JSON.stringify({ email, password }), 
+  }) 
+    .then((res) => handleResponse(res)) 
+    .then((data) => { 
+      return { 
+        data: { 
+          _id: data._id, 
+          email: data.email, 
+        }, 
+      }; 
+    }); 
+}; 
+ 
+export const login = (email, password) => {
+  return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  }).then(this._handleResponse);
-}
-
-login({ email, password }) {
-  return fetch(`${this._baseUrl}/signin`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${localStorage.getItem("jwt")}`,
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  }).then(this._handleResponse);
-}
-
-signOut() {
-  return fetch(`${this._baseUrl}/signout`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${localStorage.getItem("jwt")}`,
-    },
-  }).then(this._handleResponse);
-}
-
-// checkToken() {
-//   return fetch(`${this._baseUrl}/users/me`, {
-//     method: 'GET',
-//     headers: {
-//       "Content-Type": "application/json",
-//       authorization: `Bearer ${localStorage.getItem("jwt")}`,
-//     }
-//   })
-//   .then(this._handleResponse);
-// }
-}
-export const auth = new Auth("https://api.mesto.msl.nomoredomainsrocks.ru");
+    body: JSON.stringify({ password, email }),
+  })
+    .then((res) => handleResponse(res));
+};
+ 
+export const checkToken = (token) => { 
+  return fetch(`${BASE_URL}/users/me`, { 
+    method: "GET", 
+    headers: { 
+      Accept: "application/json", 
+      "Content-Type": "application/json", 
+      'Authorization': `Bearer ${token}`
+    }, 
+  }) 
+    .then((res) => handleResponse(res)) 
+    .then((data) => data);
+  };

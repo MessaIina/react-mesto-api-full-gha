@@ -14,12 +14,12 @@ export function Login({ onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
+  
     if (!password || !email) {
       return;
     }
-
-    onLogin(password, email);
+  
+    onLogin(email, password);
   }
 
   return (
