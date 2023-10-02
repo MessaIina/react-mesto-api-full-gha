@@ -25,7 +25,7 @@ mongoose.connect(DB_URL);
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(requestLogger); // подключаем логгер запросов
+app.use(requestLogger);
 app.use(cors);
 
 app.get('/crash-test', () => {
