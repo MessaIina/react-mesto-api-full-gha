@@ -39,11 +39,11 @@ function App() {
   isDeletePopupOpen ||
   isInfoToolTipOpen;
 
-  const token = localStorage.getItem('jwt');
+  const token = localStorage.getItem("jwt");
 
   useEffect(() => {  
-    if (token) {
-      checkToken();
+    checkToken();
+    if (loggedIn) {
       Promise.all([api.getInitialCards(token), api.getUserInfo(token)])
         .then(([resultInitial, resultInformation]) => {
           setCurrentUser(resultInformation);
@@ -53,7 +53,7 @@ function App() {
           console.log(err);
         });
     }
-  }, []);
+  }, [loggedIn]);
  
   function handleCardDelete() { 
     api 
@@ -154,9 +154,9 @@ function App() {
       .then((res) => {  
         if (res) { 
           localStorage.setItem("jwt", res.token);
-          navigate("/", { replace: true });  
+          setUserEmail(email);
           setLoggedIn(true);  
-          setUserEmail(email);  
+          navigate("/");  
         }  
       })  
       .catch((err) => console.log(err));  
@@ -170,7 +170,7 @@ function App() {
             const userEmail = res.email;    
             setUserEmail(userEmail);  
             setLoggedIn(true);  
-            navigate("/", { replace: true });  
+            navigate("/",);  
           }  
         }) 
         .catch((err) => console.log(err));  
@@ -234,21 +234,7 @@ function App() {
       <div className="page">
         <Header email={userEmail} onSignOut={signOut} loggedIn={loggedIn} />
         <Routes>
-          <Route
-            path="*"
-            element={
-              loggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />
-            }
-          />
-          <Route
-            path="/signup"
-            element={<Register onRegister={handleRegister} />}
-          />
-          <Route
-            path="/signin"
-            element={<Login onLogin={handleLogin} loggedIn={loggedIn} />}
-          />
-          <Route
+        <Route
             path="/"
             element={
               <ProtectedRouteElement
@@ -264,6 +250,20 @@ function App() {
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
               />
+            }
+          />
+          <Route
+            path="/signin"
+            element={<Login onLogin={handleLogin} loggedIn={loggedIn} />}
+          />
+          <Route
+            path="/signup"
+            element={<Register onRegister={handleRegister} />}
+          />
+          <Route
+            path="*"
+            element={
+              loggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />
             }
           />
         </Routes>
